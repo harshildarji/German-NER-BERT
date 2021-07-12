@@ -1,4 +1,4 @@
-# German NER on Legal Data using BERT
+# German NER using BERT
 
 This project consist of the following tasks:
 1. Fine-tune German BERT on Legal Data,
