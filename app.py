@@ -1,10 +1,16 @@
-from flask import Flask, render_template, request, Markup
+import pickle
+import warnings
+
 import jsonify
+import numpy as np
 import requests
 import torch
-import pickle
-import numpy as np
-from transformers import BertForTokenClassification
+from flask import Flask, Markup, render_template, request
+from transformers import BertForTokenClassification, logging
+
+warnings.simplefilter(action="ignore", category=Warning)
+logging.set_verbosity(logging.ERROR)
+
 
 print("[+] this might take a few seconds or minutes...")
 
@@ -83,6 +89,9 @@ def analyze():
 
         output = (
             output.replace("[CLS]", "").replace("[O]", "").replace("[SEP]", "").strip()
+        )
+        output = output.replace(
+            "[UNK]", """<abbr title="[UNK]"><b style="color:#545454">{}</b></abbr> """
         )
         output = "<strong>- Original text -</strong><br><br>{}<br><br><strong>- Analyzed text -</strong><br><br>{}<br><br><mark><strong>Tip:</strong> Hover over the red-underlined words to see its class.<mark>".format(
             test_sentence, output
