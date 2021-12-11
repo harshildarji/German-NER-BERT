@@ -77,6 +77,19 @@ def analyze():
                 new_labels.append(tag_values[label_idx])
                 new_tokens.append(token)
 
+        to_remove = []
+        for idx in range(len(new_tokens)):
+            if new_tokens[idx] == "." and new_labels[idx] != "O":
+                new_tokens[idx - 1] += "."
+                to_remove.append(idx)
+
+        new_tokens = [
+            token for idx, token in enumerate(new_tokens) if idx not in to_remove
+        ]
+        new_labels = [
+            label for idx, label in enumerate(new_labels) if idx not in to_remove
+        ]
+
         output = ""
         for token, label in zip(new_tokens, new_labels):
             if label != "O":
@@ -91,7 +104,8 @@ def analyze():
             output.replace("[CLS]", "").replace("[O]", "").replace("[SEP]", "").strip()
         )
         output = output.replace(
-            "[UNK]", """<abbr title="Unknown token"><b style="color:#545454">[UNK]</b></abbr> """
+            "[UNK]",
+            """<abbr title="Unknown token"><b style="color:#545454">[UNK]</b></abbr> """,
         )
         output = "<strong>- Original text -</strong><br><br>{}<br><br><strong>- Analyzed text -</strong><br><br>{}<br><br><mark><strong>Tip:</strong> Hover over the red-underlined words to see its class.<mark>".format(
             test_sentence, output
@@ -100,4 +114,4 @@ def analyze():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000")
+    app.run(host="0.0.0.0", port="5050")
