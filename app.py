@@ -91,7 +91,7 @@ def analyze():
             output.replace("[CLS]", "").replace("[O]", "").replace("[SEP]", "").strip()
         )
         output = output.replace(
-            "[UNK]", """<abbr title="[UNK]"><b style="color:#545454">{}</b></abbr> """
+            "[UNK]", """<abbr title="Unknown token"><b style="color:#545454">[UNK]</b></abbr> """
         )
         output = "<strong>- Original text -</strong><br><br>{}<br><br><strong>- Analyzed text -</strong><br><br>{}<br><br><mark><strong>Tip:</strong> Hover over the red-underlined words to see its class.<mark>".format(
             test_sentence, output
